@@ -114,6 +114,8 @@ package
 //			 hline.graphics.drawRect(0,56,YAConst.SCREEN_WIDTH,4);
 //			 hline.graphics.endFill();
 //			 btnContain.addChild(hline);
+			modeContain = new Sprite();
+			addChild(modeContain);
 			btnContain.y = 968;
 			addChild(btnContain);
 			topContain = new Sprite();
@@ -121,6 +123,7 @@ package
 //			initGuideButton();
 			initNavigation();
 		}
+		private var modeContain:Sprite;
 		private var btnContain:Sprite;
 		private var btnNameArr:Array = ["赏景点","看攻略","尝美食","玩乐地","有活动","买特产","查交通","电话簿"];
 		private var homeBtnArr:Array = ["1.png","2.png","3.png","4.png","5.png","6.png","7.png","8.png"];
@@ -193,7 +196,7 @@ package
 					if(!kmjPage)
 					{
 						kmjPage = new KmjPage(json.getKmjData());
-						addChild(kmjPage);
+						modeContain.addChild(kmjPage);
 					}else{
 						kmjPage.autoFall();
 					}
@@ -203,7 +206,7 @@ package
 					if(!linePage)
 					{
 						linePage = new LinePage(json.getLineData());
-						addChild(linePage);
+						modeContain.addChild(linePage);
 					}
 					linePage.visible = true;
 					break;
@@ -211,7 +214,7 @@ package
 					if(!foodPage)
 					{
 						foodPage = new FoodPage(json.getFoodData());
-						addChild(foodPage);
+						modeContain.addChild(foodPage);
 					}
 					foodPage.visible = true;
 					break;
@@ -219,7 +222,7 @@ package
 					if(!wldPage)
 					{
 						wldPage = new WldPage(json.getWldData());
-						addChild(wldPage);
+						modeContain.addChild(wldPage);
 					}
 					wldPage.visible = true;
 					break;
@@ -227,7 +230,7 @@ package
 					if(!mapView)
 					{
 						mapView = new CMapView(new Point(103.0119,29.9848),new Point(YAConst.SCREEN_WIDTH,YAConst.SCREEN_HEIGHT),14);
-						addChild(mapView);
+						modeContain.addChild(mapView);
 					}
 					mapView.visible = true;
 					break;
