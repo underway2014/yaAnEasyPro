@@ -8,7 +8,8 @@ package models
 		public var bg:String;
 		public var dsc:String;
 		public var btnArr:Array;
-		public var food:FoodMd;
-		public var business:BusinessMd;
+		public var beginIndexArr:Array;
+		
+		public var altArr:Array;
 	}
 }

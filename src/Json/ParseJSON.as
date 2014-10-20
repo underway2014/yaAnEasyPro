@@ -231,49 +231,54 @@ package Json
 			eatfood.bg = eatData.background;
 			eatfood.dsc = eatData.desc;
 			eatfood.btnArr = new Array();
+			eatfood.altArr = new Array();
+			eatfood.beginIndexArr = new Array();
 			
-			//美食
-			eatfood.food = new FoodMd();
-			var foodData:Object = eatData.food;
-			eatfood.food.name = foodData.name;
-			eatfood.btnArr.push(foodData.skin);	// 多添加一个按钮
-			eatfood.btnArr.push(foodData.skin);
-			eatfood.food.itemArr = new Array();
+			//美食街
+			var foodstreetData:Object = eatData.footstreet;
+			eatfood.btnArr.push(foodstreetData.skin);
 			var altmd:AtlaMd;
-			for each(var imd:Object in foodData.items)
+			var num:int = 0;
+			eatfood.beginIndexArr.push(num);
+			for each(var imd:Object in foodstreetData.items)
 			{
 				altmd = new AtlaMd();
 				altmd.name = imd.name;
 				altmd.desc = imd.dsc;
 				altmd.url = imd.picture;
-				eatfood.food.itemArr.push(altmd);
+				eatfood.altArr.push(altmd);
+				
+				num++;
 			}
+			trace("num = ",num);
+			eatfood.beginIndexArr.push(num);
+			
+			//美食
+			var foodData:Object = eatData.food;
+			eatfood.btnArr.push(foodData.skin);
+			for each(var fmd:Object in foodData.items)
+			{
+				altmd = new AtlaMd();
+				altmd.name = fmd.name;
+				altmd.desc = fmd.dsc;
+				altmd.url = fmd.picture;
+				eatfood.altArr.push(altmd);
+				num++;
+			}
+			trace("num2 = ",num);
+			eatfood.beginIndexArr.push(num);
+			
+			
 			//商业
-			eatfood.business = new BusinessMd();
 			var busData:Object = eatData.business;
-			eatfood.business.name = busData.name;
 			eatfood.btnArr.push(busData.skin);
-			eatfood.business.itemArr = new Array();
-			var itemd:BusinessItemMd;
 			for each(var bo:Object in busData.items)
 			{
-				itemd = new BusinessItemMd();
-				itemd.name = bo.name;
-				itemd.icon = bo.icon;
-				itemd.dsc = bo.dsc;
-				itemd.adress = bo.adress;
-				itemd.tel = bo.tel;
-				itemd.recomendArr = new Array();
-				var atl:AtlaMd;
-				for each(var ro:Object in bo.recomend)
-				{
-					atl = new AtlaMd();
-					atl.name = ro.name;
-					atl.url = ro.url;
-					itemd.recomendArr.push(atl);
-				}
-				
-				eatfood.business.itemArr.push(itemd);
+				altmd = new AtlaMd();
+				altmd.name = bo.name;
+				altmd.desc = bo.dsc;
+				altmd.url = bo.picture;
+				eatfood.altArr.push(altmd);
 			}
 			
 			
