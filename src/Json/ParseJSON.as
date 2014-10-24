@@ -166,7 +166,7 @@ package Json
 				wlditemMd = new WldItemMd();
 				wlditemMd.name = po.name;
 				wlditemMd.url = po.url;
-				wlditemMd.skinsArr = new Array();
+				wlditemMd.skinsArr = po.skin;
 				
 				wlditemMd.detailArr = new Array();
 				var dMd:WldItemDetailMd;

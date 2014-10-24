@@ -1,10 +1,12 @@
 package pages
 {
+	import flash.display.Shape;
 	import flash.display.Sprite;
 	import flash.events.MouseEvent;
 	
 	import core.baseComponent.CButton;
 	import core.baseComponent.CImage;
+	import core.baseComponent.HScroller;
 	import core.baseComponent.LoopAtlas;
 	
 	import models.WldItemDetailMd;
@@ -22,7 +24,10 @@ package pages
 			md = _md;
 			
 			contain = new Sprite();
-			addChild(contain);
+			var hscroll:HScroller = new HScroller(YAConst.SCREEN_WIDTH,YAConst.SCREEN_HEIGHT - 200);
+			hscroll.target = contain;
+			addChild(hscroll);
+			
 			
 			var img:CImage = new CImage(YAConst.SCREEN_WIDTH,YAConst.SCREEN_HEIGHT,false,false);
 			img.url = md.background;
@@ -49,32 +54,48 @@ package pages
 				this.visible = false;
 			}
 		}
+		private var beginY:int = 200;
+		private var radius:int = 10;
 		private function initContent():void
 		{
 			var btn:CButton;
-			var imageArr:Array = new Array();
-			var itemImg:CImage;
+			var i:int = 0;
+			
 			for each(var wmd:WldItemMd in md.itemArr)
 			{
-				itemImg = new CImage(YAConst.SCREEN_WIDTH,YAConst.SCREEN_HEIGHT,false,false);
-				itemImg.url = wmd.url;
-				imageArr.push(itemImg);
-				var i:int = 0;
-				for each(var wdmd:WldItemDetailMd in wmd.detailArr)
+				btn = new CButton(wmd.skinsArr,false,false);
+				btn.addEventListener(MouseEvent.CLICK,enterDetailHandler);
+				btn.data = wmd;
+				contain.addChild(btn);
+				if(i % 2 == 0)
 				{
-					btn = new CButton(wdmd.skin,false,false);
-					btn.addEventListener(MouseEvent.CLICK,enterDetailHandler);
-					btn.data = wmd;
-					btn.x = wdmd.coordXY.x;
-					btn.y = wdmd.coordXY.y;
-					itemImg.addChild(btn);
-					i++;
+					btn.x = 500;
+				}else{
+					btn.x = 895;
 				}
+				btn.y = i * 135 + beginY;
+				i++;
 			}
-			loopAlt = new LoopAtlas(imageArr,false);
-			contain.addChild(loopAlt);
 			
-			initPageButton();
+			var lineShape:Shape = new Shape();
+			lineShape.graphics.lineStyle(2,0xaacc00);
+			lineShape.graphics.moveTo(892,beginY + 72);
+			lineShape.graphics.lineTo(892,(i - 1) * 135 + 72 + beginY);
+			contain.addChild(lineShape);
+			
+			var cirShape:Shape;
+			for(var n:int = 0;n < i;n++)
+			{
+				cirShape = new Shape();
+				cirShape.graphics.beginFill(0xaacc00);
+				cirShape.graphics.drawCircle(0,0,radius);
+				cirShape.graphics.endFill();
+				contain.addChild(cirShape);
+				cirShape.x = 892;
+				cirShape.y = beginY + 72 + n * 135;
+			}
+			
+//			initPageButton();
 		}
 		private var loopAlt:LoopAtlas;
 		private function enterDetailHandler(event:MouseEvent):void
