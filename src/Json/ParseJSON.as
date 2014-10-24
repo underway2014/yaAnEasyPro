@@ -7,13 +7,11 @@ package Json
 	import flash.net.URLLoader;
 	import flash.net.URLRequest;
 	
+	import models.ActiveItemMd;
 	import models.ActiveMd;
 	import models.AtlaMd;
-	import models.BusinessItemMd;
-	import models.BusinessMd;
 	import models.ButtonMd;
 	import models.EatFoodMd;
-	import models.FoodMd;
 	import models.HomeMD;
 	import models.KmjMd;
 	import models.KmjPointMd;
@@ -21,6 +19,9 @@ package Json
 	import models.PointMd;
 	import models.RouteItemMd;
 	import models.RouteMd;
+	import models.TelMd;
+	import models.WldItemDetailMd;
+	import models.WldItemMd;
 	import models.WldMd;
 	
 
@@ -63,7 +64,9 @@ package Json
 		private var lineMd:LineMd;
 		private var wldMd:WldMd;
 		private var kmjMd:KmjMd;
+		private var activeMd:ActiveMd;
 		private var eatfood:EatFoodMd;
+		private var telMd:TelMd;
 		private var allSpotsArr:Vector.<PointMd> = new Vector.<PointMd>;
 		private function parseSource(data):void
 		{
@@ -156,25 +159,31 @@ package Json
 			var wldData:Object = data.WLD;
 			wldMd.name = wldData.name;
 			wldMd.background = wldData.background;
-			wldMd.pointsArr = new Array();
-			var pointMD:PointMd;
-			for each(var po:Object in wldData.points)
+			wldMd.itemArr = new Array();
+			var wlditemMd:WldItemMd;
+			for each(var po:Object in wldData.items)
 			{
-				pointMD = new PointMd();
-				pointMD.name = po.name;
-				pointMD.pointXY = new Point(po.coordX,po.coordY);
-				pointMD.btnSkinArr = new Array(po.btnNormal,po.btnDown);
-				pointMD.atlasArr = new Array();
-				var atMD:AtlaMd;
-				for each(var ao:Object in po.atlas)
+				wlditemMd = new WldItemMd();
+				wlditemMd.name = po.name;
+				wlditemMd.url = po.url;
+				wlditemMd.skinsArr = new Array();
+				
+				wlditemMd.detailArr = new Array();
+				var dMd:WldItemDetailMd;
+				for each(var dobj:Object in po.detail)
 				{
-					atMD = new AtlaMd();
-					atMD.name = ao.name;
-					atMD.url = ao.url;
-					atMD.desc = ao.desc;
-					pointMD.atlasArr.push(atMD);
+					dMd = new WldItemDetailMd();
+					dMd.name = dobj.name;
+					dMd.url = dobj.url;
+					dMd.coordXY = new Point();
+					dMd.coordXY.x = dobj.coordXY[0];
+					dMd.coordXY.y = dobj.coordXY[1];
+					dMd.skin = dobj.skin;
+//					wlditemMd.skinsArr.push(dobj.skin);
+					wlditemMd.detailArr.push(dMd);
 				}
-				wldMd.pointsArr.push(pointMD);
+				
+				wldMd.itemArr.push(wlditemMd);
 			}
 			
 			//赏景点
@@ -215,13 +224,24 @@ package Json
 			
 			
 			///活动
-			var activeMd:ActiveMd;
-			for each(var aco:Object in data.ACTIVITY)
+			var actData:Object = data.ACTIVITY;
+			activeMd = new ActiveMd();
+			activeMd.name = actData.name;
+			activeMd.bg = actData.background;
+			activeMd.itemArr = new Array();
+			
+			var acitem:ActiveItemMd;
+			for each(var aco:Object in actData.items)
 			{
-				activeMd = new ActiveMd();
-				activeMd.name = aco.name;
-				activeMd.desc = aco.desc;
-				activeArr.push(activeMd);
+				acitem = new ActiveItemMd();
+				acitem.name = aco.name;
+				acitem.desc = aco.desc;
+				acitem.label = aco.label;
+				acitem.content = aco.detail;
+				acitem.coordXY = new Point();
+				acitem.coordXY.x = aco.coordXY[0];
+				acitem.coordXY.y = aco.coordXY[1];
+				activeMd.itemArr.push(acitem);
 			}
 			
 			// 吃美食
@@ -281,6 +301,13 @@ package Json
 				eatfood.altArr.push(altmd);
 			}
 			
+			// 电话簿
+			
+			telMd = new TelMd();
+			var telData:Object = data.TEL;
+			telMd.name = telData.name;
+			telMd.contentArr = telData.content;
+			telMd.dsc = telData.desc;
 			
 			dispatchEvent(new Event(LOAD_COMPLETE));
 		}
@@ -307,6 +334,14 @@ package Json
 		public function getFoodData():EatFoodMd
 		{
 			return eatfood;
+		}
+		public function getActiveData():ActiveMd
+		{
+			return activeMd;
+		}
+		public function getTelData():TelMd
+		{
+			return telMd;
 		}
 	}
 }

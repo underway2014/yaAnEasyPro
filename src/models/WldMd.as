@@ -7,6 +7,6 @@ package models
 		}
 		public var name:String;
 		public var background:String;
-		public var pointsArr:Array;
+		public var itemArr:Array;
 	}
 }

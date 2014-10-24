@@ -13,7 +13,6 @@ package pages
 	import models.EatFoodMd;
 	import models.YAConst;
 	
-	import views.FoodStreetView;
 	
 	public class FoodPage extends Sprite
 	{
@@ -33,7 +32,7 @@ package pages
 			initButton();
 		}
 		private var contentSprite:Sprite;
-		private var beginX:int = 200;
+		private var beginX:int = 0;
 		private function initButton():void
 		{
 			var btn:CButton;
@@ -43,7 +42,7 @@ package pages
 				btn = new CButton(arr,false,false);
 				btn.data =eatmd.beginIndexArr[i];
 				btn.addEventListener(MouseEvent.CLICK,clickHandler);
-				btn.x = beginX + i * 200;
+				btn.x = beginX + i * 640;
 				addChild(btn);
 				i++;
 			}

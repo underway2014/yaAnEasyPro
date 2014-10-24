@@ -50,7 +50,7 @@ package views
 //			sourceTxt.y = 55;
 			
 			var closeImage:CImage = new CImage(66,58,true,false);
-			closeImage.url = "source/public/traveNote_close.png";
+			closeImage.url = "source/public/close.png";
 			addChild(closeImage);
 			closeImage.x = SELF_WIDHT - closeImage.width;
 			closeImage.y = 5;

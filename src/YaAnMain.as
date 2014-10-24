@@ -23,11 +23,13 @@ package
 	import models.WeatherMd;
 	import models.YAConst;
 	
+	import pages.ActivePage;
 	import pages.AtlasPage;
 	import pages.FoodPage;
 	import pages.HomePage;
 	import pages.KmjPage;
 	import pages.LinePage;
+	import pages.TelPage;
 	import pages.WldPage;
 	
 	import views.CMapView;
@@ -57,7 +59,7 @@ package
 //			http://flash.weather.com.cn/wmaps/xml/sichuan.xml
 
 			weatherData = new WeatherXmlLoader();
-			weatherData.loader("http://flash.weather.com.cn/wmaps/xml/sichuan.xml");
+//			weatherData.loader("http://flash.weather.com.cn/wmaps/xml/sichuan.xml");
 			weatherData.addEventListener(WeatherXmlLoader.LOADER_COMPLETE,weathHandler);
 		}
 		private var weatherName:Array = ["晴","space","space","阵雨","小雨","中雨","大雨","小雪","中雪","大雪","沙","霾","雾","尘","多云","阴"];
@@ -185,6 +187,8 @@ package
 		private var kmjPage:KmjPage;
 		private var mapView:CMapView;
 		private var wldPage:WldPage;
+		private var activePage:ActivePage;
+		private var telPage:TelPage;
 		private var foodPage:FoodPage;
 //		private var
 		private function clickHandler(event:MouseEvent):void
@@ -227,12 +231,18 @@ package
 					wldPage.visible = true;
 					break;
 				case YAConst.YHD:
-					if(!mapView)
+//					if(!mapView)
+//					{
+//						mapView = new CMapView(new Point(103.0119,29.9848),new Point(YAConst.SCREEN_WIDTH,YAConst.SCREEN_HEIGHT),14);
+//						modeContain.addChild(mapView);
+//					}
+//					mapView.visible = true;
+					if(!activePage)
 					{
-						mapView = new CMapView(new Point(103.0119,29.9848),new Point(YAConst.SCREEN_WIDTH,YAConst.SCREEN_HEIGHT),14);
-						modeContain.addChild(mapView);
+						activePage = new ActivePage(json.getActiveData());
+						modeContain.addChild(activePage);
 					}
-					mapView.visible = true;
+					activePage.visible = true;
 					break;
 				case YAConst.MTC:
 					
@@ -241,7 +251,12 @@ package
 					
 					break;
 				case YAConst.DHB:
-					
+					if(!telPage)
+					{
+						telPage = new TelPage(json.getTelData());
+						modeContain.addChild(telPage);
+					}
+					telPage.visible = true;
 					break;
 			}
 		}
