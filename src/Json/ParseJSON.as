@@ -15,7 +15,9 @@ package Json
 	import models.HomeMD;
 	import models.KmjMd;
 	import models.KmjPointMd;
+	import models.LineItemMd;
 	import models.LineMd;
+	import models.LinePageMd;
 	import models.PointMd;
 	import models.RouteItemMd;
 	import models.RouteMd;
@@ -23,6 +25,8 @@ package Json
 	import models.WldItemDetailMd;
 	import models.WldItemMd;
 	import models.WldMd;
+	
+	import pages.LinePage;
 	
 
 	public class ParseJSON extends EventDispatcher
@@ -130,28 +134,28 @@ package Json
 			//好线路
 			lineMd = new LineMd();
 			var lineData:Object = data.LINE;
-			lineMd.colorMap = lineData.colorMap;
-			lineMd.routesArr = new Array();
-			var routeMd:RouteMd;
-			for each(var obj:Object in lineData.routes)
+			lineMd.bg = lineData.background;
+			lineMd.desc = lineData.desc;
+			lineMd.pageArr = new Array();
+			var pageMd:LinePageMd;
+			for each(var obj:Object in lineData.page)
 			{
-				routeMd = new RouteMd();
-				routeMd.name = obj.name;
-				routeMd.itemArr = new Array();
-				var routeItemMd:RouteItemMd;
+				pageMd = new LinePageMd();
+				pageMd.name = obj.name;
+				pageMd.bg = obj.background;
+				pageMd.itemArr = new Array();
+				var lineItemMd:LineItemMd;
 				for each(var iobj:Object in obj.items)
 				{
-					routeItemMd = new RouteItemMd();
-					routeItemMd.name = iobj.name;
-					routeItemMd.lineMap = iobj.lineMap;
-					routeItemMd.pintsArr = new Array();
-					for each(var n:int in iobj.points)
-					{
-						routeItemMd.pintsArr.push(allSpotsArr[n]);
-					}
-					routeMd.itemArr.push(routeItemMd);
+					lineItemMd = new LineItemMd();
+					lineItemMd.name = iobj.name;
+					lineItemMd.skin = iobj.skin;
+					lineItemMd.coordXY = new Point();
+					lineItemMd.coordXY.x = iobj.coordXY[0];
+					lineItemMd.coordXY.y = iobj.coordXY[1];
+					pageMd.itemArr.push(lineItemMd);
 				}
-				lineMd.routesArr.push(routeMd);
+				lineMd.pageArr.push(pageMd);
 			}
 			
 			///玩乐地

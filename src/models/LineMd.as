@@ -5,7 +5,9 @@ package models
 		public function LineMd()
 		{
 		}
-		public var colorMap:String;
-		public var routesArr:Array;
+		public var name:String;
+		public var bg:String;
+		public var desc:String;
+		public var pageArr:Array;
 	}
 }
