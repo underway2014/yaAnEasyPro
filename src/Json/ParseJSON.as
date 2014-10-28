@@ -20,17 +20,14 @@ package Json
 	import models.LineItemMd;
 	import models.LineMd;
 	import models.LinePageMd;
+	import models.MtcItemDetalMd;
 	import models.MtcItemMd;
 	import models.MtcMd;
 	import models.PointMd;
-	import models.RouteItemMd;
-	import models.RouteMd;
 	import models.TelMd;
 	import models.WldItemDetailMd;
 	import models.WldItemMd;
 	import models.WldMd;
-	
-	import pages.LinePage;
 	
 
 	public class ParseJSON extends EventDispatcher
@@ -242,7 +239,19 @@ package Json
 			for each(var mtc:Object in mtcData.items)
 			{
 				mtcItemMd = new MtcItemMd();
+				mtcItemMd.name = mtc.name;
 				mtcItemMd.skin = mtc.skin;
+				mtcItemMd.itemArr = new Array();
+				
+				var mdetalMd:MtcItemDetalMd;
+				for each(var ide:Object in mtc.items)
+				{
+					mdetalMd = new MtcItemDetalMd();
+					mdetalMd.skin = ide.skin;
+					mdetalMd.detail = ide.detail;
+					
+					mtcItemMd.itemArr.push(mdetalMd);
+				}
 				mtcMd.itemArr.push(mtcItemMd);
 			}
 			

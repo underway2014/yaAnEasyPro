@@ -229,7 +229,6 @@ package
 					if(!foodPage)
 					{
 						foodPage = new FoodPage(json.getFoodData());
-//						foodPage.addEventListener(Cevent.PAGEINIT_COMPLETE,telok);
 						modeContain.addChild(foodPage);
 						willShowMode = foodPage;
 					}else{
@@ -279,7 +278,6 @@ package
 					if(!telPage)
 					{
 						telPage = new TelPage(json.getTelData());
-//						telPage.addEventListener(Cevent.PAGEINIT_COMPLETE,telok);
 						modeContain.addChild(telPage);
 						willShowMode = telPage;
 					}else{
@@ -302,6 +300,10 @@ package
 		private var isExist:Boolean = false;
 		private function clear(ss:PageClear):void
 		{
+			if(willShowMode)
+			{
+				currentMode = willShowMode;
+			}
 			if(currentMode)
 			{
 				if(currentMode != ss)
@@ -314,12 +316,12 @@ package
 		}
 		private function pageInitComplete(event:Event):void
 		{
+			trace("get init.");
 			if(currentMode)
 			{
 				currentMode.hide();
 				currentMode.clearAll();
 			}
-			currentMode = willShowMode;
 		}
 		private function enterHandler(event:DataEvent):void
 		{

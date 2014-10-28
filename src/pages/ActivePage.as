@@ -4,6 +4,7 @@ package pages
 	import flash.events.Event;
 	import flash.events.MouseEvent;
 	import flash.events.TimerEvent;
+	import flash.utils.Timer;
 	
 	import core.baseComponent.CButton;
 	import core.baseComponent.CImage;
@@ -86,7 +87,24 @@ package pages
 				i++;
 				
 			}
+			timer = new Timer(100,1);
+			timer.addEventListener(TimerEvent.TIMER,dispatchHandler);
+			timer.addEventListener(TimerEvent.TIMER_COMPLETE,timerComplete);
+			timer.start();
+		}
+		private var timer:Timer;
+		private function dispatchHandler(event:Event):void
+		{
 			dispatchEvent(new Event(Cevent.PAGEINIT_COMPLETE,true));
+		}
+		private function timerComplete(event:TimerEvent):void
+		{
+			if(timer)
+			{
+				timer.removeEventListener(TimerEvent.TIMER,dispatchHandler);
+				timer.removeEventListener(TimerEvent.TIMER_COMPLETE,timerComplete);
+				timer = null;
+			}
 		}
 		private var detailContain:Sprite;
 		private function clickHandler(event:MouseEvent):void

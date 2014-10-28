@@ -78,13 +78,24 @@ package pages
 			
 			
 			
-			var timer:Timer = new Timer(100,1);
-			timer.addEventListener(TimerEvent.TIMER,test);
+			timer = new Timer(100,1);
+			timer.addEventListener(TimerEvent.TIMER,dispatchHandler);
+			timer.addEventListener(TimerEvent.TIMER_COMPLETE,timerComplete);
 			timer.start();
 		}
-		private function test(event:Event):void
+		private var timer:Timer;
+		private function dispatchHandler(event:Event):void
 		{
 			dispatchEvent(new Event(Cevent.PAGEINIT_COMPLETE,true));
+		}
+		private function timerComplete(event:TimerEvent):void
+		{
+			if(timer)
+			{
+				timer.removeEventListener(TimerEvent.TIMER,dispatchHandler);
+				timer.removeEventListener(TimerEvent.TIMER_COMPLETE,timerComplete);
+				timer = null;
+			}
 		}
 		private function initPageButton():void
 		{

@@ -17,6 +17,8 @@ package pages
 	import models.MtcMd;
 	import models.YAConst;
 	
+	import views.MtcSonView;
+	
 	public class MtcPage extends Sprite implements PageClear
 	{
 		private var md:MtcMd;
@@ -56,20 +58,12 @@ package pages
 				btn = new CButton(imd.skin,false);
 				btn.addEventListener(MouseEvent.CLICK,clickHandler);
 				group.add(btn);
+				btn.data = imd;
 				btn.y = i * 167;
 				btnSprite.addChild(btn);
-//				if(i > 0 && i< md.itemArr.length - 1)
-//				{
-//					line = new Shape();
-//					line.graphics.lineStyle(2,0xaa0000);
-//					line.graphics.moveTo(50,i * 166);
-//					line.graphics.lineTo(252,i * 166);
-//					line.graphics.endFill();
-//					btnSprite.addChild(line);
-//				}
 				i++;
 			}
-			group.selectById(0);
+//			group.selectById(0);
 			group.addEventListener(Cevent.SELECT_CHANGE,slectHandler);
 			dispatchEvent(new Event(Cevent.PAGEINIT_COMPLETE,true));
 		}
@@ -78,9 +72,29 @@ package pages
 			var cb:CButton = event.currentTarget as CButton;
 			group.selectByItem(cb);
 		}
+		private var mtcSonView:MtcSonView;
 		private function slectHandler(event:Event):void
 		{
+			var ccb:CButton = group.getCurrentObj() as CButton;
+			if(mtcSonView)
+			{
+				if(mtcSonView.parent)
+				{
+					mtcSonView.parent.removeChild(mtcSonView);
+				}
+			}
 			
+			mtcSonView = new MtcSonView(ccb.data);
+			mtcSonView.addEventListener(Event.REMOVED_FROM_STAGE,sonViewNull);
+			addChild(mtcSonView);
+			mtcSonView.x = btnSprite.x + 353 + 30;
+		}
+		private function sonViewNull(event:Event):void
+		{
+			if(mtcSonView)
+			{
+				mtcSonView = null;
+			}
 		}
 		public function clearAll():void
 		{

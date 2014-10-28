@@ -5,14 +5,13 @@ package pages
 	import flash.events.Event;
 	import flash.events.MouseEvent;
 	import flash.events.TimerEvent;
-	import flash.utils.Timer;
 	
 	import core.baseComponent.CButton;
 	import core.baseComponent.CImage;
 	import core.baseComponent.HScroller;
 	import core.baseComponent.LoopAtlas;
 	import core.interfaces.PageClear;
-	import core.loadEvents.Cevent;
+	import core.loadEvents.CLoader;
 	
 	import models.WldItemMd;
 	import models.WldMd;
@@ -49,8 +48,28 @@ package pages
 //			timer.addEventListener(TimerEvent.TIMER,timerYcHandler);
 //			timer.start();
 			
+			detailSprite = new Sprite();
+			addChild(detailSprite);
+			imgContain = new Sprite();
+			detailSprite.addChild(imgContain);
+			scroller = new HScroller(1690,890,sbar);
+			scroller.target = imgContain;
+			scroller.barX = 1690 - 70;
+			detailSprite.addChild(scroller);
+			
+			var carr:Array = ["source/public/wld_close.png","source/public/wld_close.png"];
+			var closeBtn:CButton = new CButton(carr,false,false);
+			closeBtn.addEventListener(MouseEvent.CLICK,closeDetail);
+			detailSprite.addChild(closeBtn);
+			closeBtn.x = 1600;
+			closeBtn.y = 20;
+			
+			detailSprite.x = 115;
+			detailSprite.y = 50;
+			
 			initContent();
 		}
+		private var scroller:HScroller;
 		private function timerYcHandler(event:TimerEvent):void
 		{
 		}
@@ -72,7 +91,7 @@ package pages
 			{
 				btn = new CButton(wmd.skinsArr,false,false);
 				btn.addEventListener(MouseEvent.CLICK,enterDetailHandler);
-				btn.data = wmd;
+				btn.data = wmd.url;
 				contain.addChild(btn);
 				if(i % 2 == 0)
 				{
@@ -108,9 +127,42 @@ package pages
 			
 		}
 		private var loopAlt:LoopAtlas;
+		private var detailSprite:Sprite;
+		private var imgContain:Sprite;
+		private var loader:CLoader;
 		private function enterDetailHandler(event:MouseEvent):void
 		{
 			
+			var cb:CButton = event.currentTarget as CButton;
+			loader = new CLoader();
+			loader.load(cb.data);
+			loader.addEventListener(CLoader.LOADE_COMPLETE,completeHandler);
+		}
+		private function completeHandler(event:Event):void
+		{
+			detailSprite.visible = true;
+			imgContain.addChild(loader._loader);
+			loader._loader.addEventListener(Event.REMOVED_FROM_STAGE,detailNull);
+			scroller.reset();
+		}
+		private function closeDetail(event:MouseEvent):void
+		{
+			detailSprite.visible = false;
+			while(imgContain.numChildren)
+			{
+				imgContain.removeChildAt(0);
+			}
+		}
+		private function detailNull(event:Event):void
+		{
+			if(loader)
+			{
+				if(loader._loader)
+				{
+					loader._loader = null;
+				}
+				loader = null;
+			}
 		}
 		private function initPageButton():void
 		{

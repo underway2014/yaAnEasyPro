@@ -7,6 +7,6 @@ package models
 		}
 		public var name:String;
 		public var skin:Array;
-		public var detail:String;
+		public var itemArr:Array;
 	}
 }
