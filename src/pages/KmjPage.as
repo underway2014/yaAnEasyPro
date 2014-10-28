@@ -1,20 +1,25 @@
 package pages
 {
 	import flash.display.Sprite;
+	import flash.events.Event;
 	import flash.events.MouseEvent;
+	import flash.events.TimerEvent;
 	import flash.net.navigateToURL;
+	import flash.utils.Timer;
 	
 	import core.baseComponent.CButton;
 	import core.baseComponent.CDrag;
 	import core.baseComponent.CImage;
 	import core.baseComponent.CSprite;
+	import core.interfaces.PageClear;
+	import core.loadEvents.Cevent;
 	import core.tween.TweenLite;
 	
 	import models.KmjMd;
 	import models.KmjPointMd;
 	import models.YAConst;
 	
-	public class KmjPage extends Sprite
+	public class KmjPage extends Sprite implements PageClear
 	{
 		private var kmjMd:KmjMd;
 		private var drag:CDrag;
@@ -37,6 +42,14 @@ package pages
 			btnContain = new Sprite();
 			contain.addChild(btnContain);
 			
+//			var timer:Timer = new Timer(100,1);
+//			timer.addEventListener(TimerEvent.TIMER,timerHandler);
+//			timer.start();
+			
+			timerHandler(null);
+		}
+		private function timerHandler(event:TimerEvent):void
+		{
 			var arr:Array = ["source/public/back_up.png","source/public/back_up.png"];
 			var backBtn:CButton = new CButton(arr,false);
 			backBtn.addEventListener(MouseEvent.CLICK,backHandler);
@@ -97,6 +110,7 @@ package pages
 				btn.addEventListener(MouseEvent.CLICK,clickAlphaButton);
 			}
 			autoFall();
+			dispatchEvent(new Event(Cevent.PAGEINIT_COMPLETE,true));
 		}
 		private var btnArr:Array;
 		public function autoFall():void
@@ -141,6 +155,18 @@ package pages
 			var cb:CSprite = event.currentTarget as CSprite;
 			var atlasPage:AtlasPage = new AtlasPage(cb.data);
 			addChild(atlasPage);
+		}
+		public function clearAll():void
+		{
+			
+		}
+		public function hide():void
+		{
+			this.visible = false;
+		}
+		public function show():void
+		{
+			this.visible = true;
 		}
 	}
 }

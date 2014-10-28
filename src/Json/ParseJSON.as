@@ -10,14 +10,18 @@ package Json
 	import models.ActiveItemMd;
 	import models.ActiveMd;
 	import models.AtlaMd;
+	import models.BusinessMd;
 	import models.ButtonMd;
 	import models.EatFoodMd;
+	import models.FoodStreetMd;
 	import models.HomeMD;
 	import models.KmjMd;
 	import models.KmjPointMd;
 	import models.LineItemMd;
 	import models.LineMd;
 	import models.LinePageMd;
+	import models.MtcItemMd;
+	import models.MtcMd;
 	import models.PointMd;
 	import models.RouteItemMd;
 	import models.RouteMd;
@@ -68,6 +72,7 @@ package Json
 		private var lineMd:LineMd;
 		private var wldMd:WldMd;
 		private var kmjMd:KmjMd;
+		private var mtcMd:MtcMd;
 		private var activeMd:ActiveMd;
 		private var eatfood:EatFoodMd;
 		private var telMd:TelMd;
@@ -227,6 +232,21 @@ package Json
 			}
 			
 			
+			//买特产
+			var mtcData:Object = data.MTC;
+			mtcMd = new MtcMd();
+			mtcMd.bg = mtcData.background;
+			mtcMd.itemArr = new Array();
+			
+			var mtcItemMd:MtcItemMd;
+			for each(var mtc:Object in mtcData.items)
+			{
+				mtcItemMd = new MtcItemMd();
+				mtcItemMd.skin = mtc.skin;
+				mtcMd.itemArr.push(mtcItemMd);
+			}
+			
+			
 			///活动
 			var actData:Object = data.ACTIVITY;
 			activeMd = new ActiveMd();
@@ -261,17 +281,17 @@ package Json
 			//美食街
 			var foodstreetData:Object = eatData.footstreet;
 			eatfood.btnArr.push(foodstreetData.skin);
+			eatfood.foodStreetMd = new FoodStreetMd();
+			eatfood.foodStreetMd.bg = foodstreetData.background;
+			eatfood.foodStreetMd.itemArr = new Array();
 			var altmd:AtlaMd;
 			var num:int = 0;
 			eatfood.beginIndexArr.push(num);
 			for each(var imd:Object in foodstreetData.items)
 			{
 				altmd = new AtlaMd();
-				altmd.name = imd.name;
-				altmd.desc = imd.dsc;
 				altmd.url = imd.picture;
-				eatfood.altArr.push(altmd);
-				
+				eatfood.foodStreetMd.itemArr.push(altmd);
 				num++;
 			}
 			trace("num = ",num);
@@ -296,13 +316,14 @@ package Json
 			//商业
 			var busData:Object = eatData.business;
 			eatfood.btnArr.push(busData.skin);
+			eatfood.businessMd = new BusinessMd();
+			eatfood.businessMd.bg = busData.background;
+			eatfood.businessMd.itemArr = new Array();
 			for each(var bo:Object in busData.items)
 			{
 				altmd = new AtlaMd();
-				altmd.name = bo.name;
-				altmd.desc = bo.dsc;
 				altmd.url = bo.picture;
-				eatfood.altArr.push(altmd);
+				eatfood.businessMd.itemArr.push(altmd);
 			}
 			
 			// 电话簿
@@ -346,6 +367,10 @@ package Json
 		public function getTelData():TelMd
 		{
 			return telMd;
+		}
+		public function getMctData():MtcMd
+		{
+			return mtcMd;
 		}
 	}
 }

@@ -5,13 +5,14 @@ package pages
 	
 	import core.baseComponent.CButton;
 	import core.baseComponent.CDrag;
+	import core.interfaces.PageClear;
 	
 	import models.AtlaMd;
 	import models.YAConst;
 	
 	import views.PicTxtView;
 	
-	public class PictureFlowPage extends Sprite
+	public class PictureFlowPage extends Sprite implements PageClear
 	{
 		private var content:Sprite;
 		
@@ -61,6 +62,18 @@ package pages
 				this.visible = false;
 				this.parent.removeChild(this);
 			}
+		}
+		public function clearAll():void
+		{
+			
+		}
+		public function hide():void
+		{
+			this.visible = false;
+		}
+		public function show():void
+		{
+			this.visible = true;
 		}
 	}
 }

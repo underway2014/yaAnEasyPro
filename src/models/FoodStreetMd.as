@@ -1,12 +1,12 @@
 package models
 {
-	public class BusinessMd
+	public class FoodStreetMd
 	{
-		public function BusinessMd()
+		public function FoodStreetMd()
 		{
 		}
 		public var name:String;
-		public var bg:String;
 		public var itemArr:Array;
+		public var bg:String;
 	}
 }

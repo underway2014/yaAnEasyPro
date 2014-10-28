@@ -11,5 +11,9 @@ package models
 		public var beginIndexArr:Array;
 		
 		public var altArr:Array;
+		
+		public var businessMd:BusinessMd;
+		public var foodStreetMd:FoodStreetMd;
+		public var foodMd:FoodMd;
 	}
 }

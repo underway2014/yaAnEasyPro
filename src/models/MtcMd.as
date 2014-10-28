@@ -1,8 +1,8 @@
 package models
 {
-	public class BusinessMd
+	public class MtcMd
 	{
-		public function BusinessMd()
+		public function MtcMd()
 		{
 		}
 		public var name:String;

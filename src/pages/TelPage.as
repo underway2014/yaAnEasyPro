@@ -7,12 +7,14 @@ package pages
 	import core.baseComponent.CButton;
 	import core.baseComponent.CImage;
 	import core.baseComponent.HScroller;
+	import core.interfaces.PageClear;
 	import core.loadEvents.CLoader;
+	import core.loadEvents.Cevent;
 	
 	import models.TelMd;
 	import models.YAConst;
 	
-	public class TelPage extends Sprite
+	public class TelPage extends Sprite implements PageClear
 	{
 		private var md:TelMd;
 		private var imgContain:Sprite;
@@ -20,8 +22,10 @@ package pages
 		{
 			super();
 			md = _md;
-			var hscroll:HScroller = new HScroller(YAConst.SCREEN_WIDTH,YAConst.SCREEN_HEIGHT);
+			var sbar:Array = ["source/public/slider.png","source/public/bar.png"];
+			var hscroll:HScroller = new HScroller(YAConst.SCREEN_WIDTH,YAConst.SCREEN_HEIGHT,sbar);
 			addChild(hscroll);
+			hscroll.barX = YAConst.SCREEN_WIDTH - YAConst.SCROLLBAR_RHGITH_MARGIN;
 			imgContain = new Sprite();
 			hscroll.target = imgContain;
 			
@@ -46,6 +50,7 @@ package pages
 			addChild(backBtn);
 			backBtn.x = 30;
 			backBtn.y = 30;
+			this.dispatchEvent(new Event(Cevent.PAGEINIT_COMPLETE,true));
 		
 		}
 		private function okHandler(event:Event):void
@@ -59,6 +64,18 @@ package pages
 			{
 				this.visible = false;
 			}
+		}
+		public function clearAll():void
+		{
+			
+		}
+		public function hide():void
+		{
+			this.visible = false;
+		}
+		public function show():void
+		{
+			this.visible = true;
 		}
 	}
 }

@@ -6,7 +6,7 @@ package models
 		{
 		}
 		public var name:String;
-		public var desc:String;
+		public var bg:String;
 		public var itemArr:Array;
 		
 	}

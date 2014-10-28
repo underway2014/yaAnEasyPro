@@ -12,6 +12,7 @@ package pages
 	import core.baseComponent.CImage;
 	import core.baseComponent.MusicPlayer;
 	import core.filter.CFilter;
+	import core.interfaces.PageClear;
 	import core.tween.TweenLite;
 	
 	import models.AtlaMd;
@@ -20,7 +21,7 @@ package pages
 	
 	import views.SpotNameView;
 	
-	public class AtlasPage extends Sprite
+	public class AtlasPage extends Sprite implements PageClear
 	{
 		private var pointMd:PointMd;
 		private var contentContain:Sprite;
@@ -195,6 +196,18 @@ package pages
 				currentPage = nameArr.length - 1;
 			}
 			changeName(currentPage);
+		}
+		public function clearAll():void
+		{
+			
+		}
+		public function hide():void
+		{
+			this.visible = false;
+		}
+		public function show():void
+		{
+			this.visible = true;
 		}
 	}
 }

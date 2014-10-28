@@ -8,6 +8,7 @@ package pages
 	import core.baseComponent.CImage;
 	import core.baseComponent.LoopAtlas;
 	import core.date.CDate;
+	import core.interfaces.PageClear;
 	import core.loadEvents.DataEvent;
 	
 	import models.AtlaMd;
@@ -16,7 +17,7 @@ package pages
 	import models.WeatherMd;
 	import models.YAConst;
 	
-	public class HomePage extends Sprite
+	public class HomePage extends Sprite implements PageClear
 	{
 		private var contentSprite:Sprite;
 		private var loopAtlas:LoopAtlas;
@@ -124,6 +125,18 @@ package pages
 		{
 			
 			
+		}
+		public function clearAll():void
+		{
+			
+		}
+		public function hide():void
+		{
+			this.visible = false;
+		}
+		public function show():void
+		{
+			this.visible = true;
 		}
 	}
 }

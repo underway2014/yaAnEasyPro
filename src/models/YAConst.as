@@ -8,6 +8,8 @@ package models
 		public static const SCREEN_WIDTH:int = 1920;
 		public static const SCREEN_HEIGHT:int = 1080;
 		
+		public static const SCROLLBAR_RHGITH_MARGIN:int = 80;
+		
 		
 		public static const HOME:String = "HOME";
 		

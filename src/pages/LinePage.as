@@ -1,11 +1,14 @@
 package pages
 {
 	import flash.display.Sprite;
+	import flash.events.Event;
 	import flash.events.MouseEvent;
 	
 	import core.baseComponent.CButton;
 	import core.baseComponent.CDrag;
 	import core.baseComponent.CImage;
+	import core.interfaces.PageClear;
+	import core.loadEvents.Cevent;
 	
 	import models.LineItemMd;
 	import models.LineMd;
@@ -13,7 +16,7 @@ package pages
 	import models.YAConst;
 	
 	
-	public class LinePage extends Sprite
+	public class LinePage extends Sprite implements PageClear
 	{
 		private var lineData:LineMd;
 		private var map_width:int = 1080;
@@ -40,7 +43,6 @@ package pages
 			
 			init();
 			
-			
 		}
 		private function init():void
 		{
@@ -63,6 +65,7 @@ package pages
 				}
 				i++;
 			}
+			dispatchEvent(new Event(Cevent.PAGEINIT_COMPLETE,true));
 		}
 		private function clickHandler(event:MouseEvent):void
 		{
@@ -74,6 +77,18 @@ package pages
 			{
 				this.visible = false;
 			}
+		}
+		public function clearAll():void
+		{
+			
+		}
+		public function hide():void
+		{
+			this.visible = false;
+		}
+		public function show():void
+		{
+			this.visible = true;
 		}
 		
 	}

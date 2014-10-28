@@ -4,7 +4,6 @@ package
 	import flash.events.Event;
 	import flash.events.MouseEvent;
 	import flash.events.TimerEvent;
-	import flash.geom.Point;
 	import flash.text.TextField;
 	import flash.text.TextFormat;
 	import flash.utils.Timer;
@@ -15,6 +14,8 @@ package
 	import core.baseComponent.CButton;
 	import core.baseComponent.CImage;
 	import core.baseComponent.CSprite;
+	import core.interfaces.PageClear;
+	import core.loadEvents.Cevent;
 	import core.loadEvents.DataEvent;
 	
 	import models.HomeMD;
@@ -29,6 +30,7 @@ package
 	import pages.HomePage;
 	import pages.KmjPage;
 	import pages.LinePage;
+	import pages.MtcPage;
 	import pages.TelPage;
 	import pages.WldPage;
 	
@@ -40,6 +42,8 @@ package
 		public function YaAnMain()
 		{
 			initData();
+			
+			this.addEventListener(Cevent.PAGEINIT_COMPLETE,pageInitComplete);
 		}
 		private var json:ParseJSON;
 		private var weatherData:WeatherXmlLoader
@@ -118,6 +122,7 @@ package
 //			 btnContain.addChild(hline);
 			modeContain = new Sprite();
 			addChild(modeContain);
+			
 			btnContain.y = 968;
 			addChild(btnContain);
 			topContain = new Sprite();
@@ -187,10 +192,12 @@ package
 		private var kmjPage:KmjPage;
 		private var mapView:CMapView;
 		private var wldPage:WldPage;
+		private var mtcPage:MtcPage;
 		private var activePage:ActivePage;
 		private var telPage:TelPage;
 		private var foodPage:FoodPage;
-//		private var
+		private var currentMode:PageClear;
+		private var willShowMode:PageClear;
 		private function clickHandler(event:MouseEvent):void
 		{
 			var t:CButton = event.currentTarget as CButton;
@@ -201,34 +208,43 @@ package
 					{
 						kmjPage = new KmjPage(json.getKmjData());
 						modeContain.addChild(kmjPage);
+						willShowMode = kmjPage;
 					}else{
+						if(currentMode && currentMode != kmjPage)
 						kmjPage.autoFall();
+						clear(kmjPage);
 					}
-					kmjPage.visible = true;
 					break;
 				case YAConst.KGL:
 					if(!linePage)
 					{
 						linePage = new LinePage(json.getLineData());
 						modeContain.addChild(linePage);
+						willShowMode = linePage;
+					}else{
+						clear(linePage);
 					}
-					linePage.visible = true;
 					break;
 				case YAConst.CMS:
 					if(!foodPage)
 					{
 						foodPage = new FoodPage(json.getFoodData());
+//						foodPage.addEventListener(Cevent.PAGEINIT_COMPLETE,telok);
 						modeContain.addChild(foodPage);
+						willShowMode = foodPage;
+					}else{
+						clear(foodPage);
 					}
-					foodPage.visible = true;
 					break;
 				case YAConst.WLD:
 					if(!wldPage)
 					{
 						wldPage = new WldPage(json.getWldData());
 						modeContain.addChild(wldPage);
+						willShowMode = wldPage;
+					}else{
+						clear(wldPage);
 					}
-					wldPage.visible = true;
 					break;
 				case YAConst.YHD:
 //					if(!mapView)
@@ -241,11 +257,20 @@ package
 					{
 						activePage = new ActivePage(json.getActiveData());
 						modeContain.addChild(activePage);
+						willShowMode = telPage;
+					}else{
+						clear(activePage);
 					}
-					activePage.visible = true;
 					break;
 				case YAConst.MTC:
-					
+					if(!mtcPage)
+					{
+						mtcPage = new MtcPage(json.getMctData());
+						modeContain.addChild(mtcPage);
+						willShowMode = telPage;
+					}else{
+						clear(mtcPage);
+					}
 					break;
 				case YAConst.CJT:
 					
@@ -254,13 +279,48 @@ package
 					if(!telPage)
 					{
 						telPage = new TelPage(json.getTelData());
+//						telPage.addEventListener(Cevent.PAGEINIT_COMPLETE,telok);
 						modeContain.addChild(telPage);
+						willShowMode = telPage;
+					}else{
+						clear(telPage);
 					}
-					telPage.visible = true;
+					
 					break;
 			}
 		}
-		
+		private function pageOkHandler(event:Event):void
+		{
+			var xx:Sprite = new Sprite();
+			trace("page ok");
+		}
+		private function telok(event:Event):void
+		{
+			var xx:Sprite = new Sprite();
+			trace("tel ok");
+		}
+		private var isExist:Boolean = false;
+		private function clear(ss:PageClear):void
+		{
+			if(currentMode)
+			{
+				if(currentMode != ss)
+				{
+					ss.show();
+					currentMode.clearAll();
+					currentMode = ss;
+				}
+			}
+		}
+		private function pageInitComplete(event:Event):void
+		{
+			if(currentMode)
+			{
+				currentMode.hide();
+				currentMode.clearAll();
+			}
+			currentMode = willShowMode;
+		}
 		private function enterHandler(event:DataEvent):void
 		{
 			trace(event.data[0],event.data[1]);
