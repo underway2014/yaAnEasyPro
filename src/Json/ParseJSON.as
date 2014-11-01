@@ -16,6 +16,7 @@ package Json
 	import models.FoodStreetMd;
 	import models.HomeMD;
 	import models.KmjMd;
+	import models.KmjPointDetailMd;
 	import models.KmjPointMd;
 	import models.LineItemMd;
 	import models.LineMd;
@@ -155,6 +156,7 @@ package Json
 					lineItemMd.coordXY = new Point();
 					lineItemMd.coordXY.x = iobj.coordXY[0];
 					lineItemMd.coordXY.y = iobj.coordXY[1];
+					lineItemMd.detail = iobj.detail;
 					pageMd.itemArr.push(lineItemMd);
 				}
 				lineMd.pageArr.push(pageMd);
@@ -196,7 +198,7 @@ package Json
 			kmjMd = new KmjMd();
 			var kmjData:Object = data.SJD;
 			kmjMd.name = kmjData.name;
-			kmjMd.background = kmjData.background;
+			kmjMd.map = kmjData.map;
 			kmjMd.pointArr = new Array();
 			var kmjSpotMd:KmjPointMd;
 			var currType:int = 0;
@@ -205,28 +207,26 @@ package Json
 				kmjSpotMd = new KmjPointMd();
 				kmjSpotMd.name = ko.name;
 				kmjSpotMd.pointXY = new Point(ko.coordX,ko.coordY);
-				kmjSpotMd.skinArr = new Array(ko.btnNormal,ko.btnDown);
-				kmjSpotMd.spotMd = allSpotsArr[ko.spotId];
-				kmjSpotMd.type = ko.type;
-				if(kmjSpotMd.type > currType)
-				{
-					currType = ko.type;
-				}
+				kmjSpotMd.skinArr = ko.skin;
+				kmjSpotMd.detailmd = new KmjPointDetailMd();
+				kmjSpotMd.detailmd.bg = ko.detail.detailbackground;
+				kmjSpotMd.detailmd.txt = ko.detail.txt;
+				kmjSpotMd.detailmd.headArr = ko.detail.head;
 				kmjMd.pointArr.push(kmjSpotMd);
 			}
-			kmjMd.childCityArr = new Array();
-			for(var c:int = 0;c <= currType;c++)
-			{
-				var arr:Array = new Array();
-				for each(var xx:KmjPointMd in kmjMd.pointArr)
-				{
-					if(xx.type == c)
-					{
-						arr.push(xx);
-					}
-				}
-				kmjMd.childCityArr.push(arr);
-			}
+//			kmjMd.childCityArr = new Array();
+//			for(var c:int = 0;c <= currType;c++)
+//			{
+//				var arr:Array = new Array();
+//				for each(var xx:KmjPointMd in kmjMd.pointArr)
+//				{
+//					if(xx.type == c)
+//					{
+//						arr.push(xx);
+//					}
+//				}
+//				kmjMd.childCityArr.push(arr);
+//			}
 			
 			
 			//买特产

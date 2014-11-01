@@ -13,5 +13,7 @@ package models
 		public var skinArr:Array;
 		public var spotMd:PointMd; // spotId 对应 ALLspots 中的一个景点
 		public var type:int; // 区分 全市 / ..区 / ..区
+		
+		public var detailmd:KmjPointDetailMd;
 	}
 }

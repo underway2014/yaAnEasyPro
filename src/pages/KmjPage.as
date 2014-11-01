@@ -1,11 +1,10 @@
 package pages
 {
 	import flash.display.Sprite;
+	import flash.display3D.textures.CubeTexture;
 	import flash.events.Event;
 	import flash.events.MouseEvent;
 	import flash.events.TimerEvent;
-	import flash.net.navigateToURL;
-	import flash.utils.Timer;
 	
 	import core.baseComponent.CButton;
 	import core.baseComponent.CDrag;
@@ -18,6 +17,8 @@ package pages
 	import models.KmjMd;
 	import models.KmjPointMd;
 	import models.YAConst;
+	
+	import views.KmjDetailView;
 	
 	public class KmjPage extends Sprite implements PageClear
 	{
@@ -36,7 +37,7 @@ package pages
 			drag.target = contain;
 			
 			var bgImg:CImage = new CImage(YAConst.SCREEN_WIDTH,YAConst.SCREEN_HEIGHT + 100,false,false);
-			bgImg.url = kmjMd.background;
+			bgImg.url = kmjMd.map;
 			contain.addChild(bgImg);
 			
 			btnContain = new Sprite();
@@ -62,7 +63,7 @@ package pages
 			navagation.x = 100;
 			navagation.y = 50;
 			
-			initBar();
+//			initBar();
 			
 			initAlphaButton();
 		}
@@ -103,9 +104,11 @@ package pages
 				btn.graphics.drawRect(0,0,150,65);
 				btn.graphics.endFill();
 				btnContain.addChild(btn);
-				btn.x = kmd.pointXY.x;
-				btn.y = kmd.pointXY.y;
-				btn.data = kmd.spotMd;
+//				btn.x = kmd.pointXY.x;
+//				btn.y = kmd.pointXY.y;
+				btn.x = Math.random() * 1920;
+				btn.y = Math.random() * 1080;
+				btn.data = kmd.detailmd;
 				btnArr.push(btn);
 				btn.addEventListener(MouseEvent.CLICK,clickAlphaButton);
 			}
@@ -150,11 +153,20 @@ package pages
 			var atlasPage:AtlasPage = new AtlasPage(cb.data);
 			addChild(atlasPage);
 		}
+		private var detailView:KmjDetailView;
 		private function clickAlphaButton(event:MouseEvent):void
 		{
 			var cb:CSprite = event.currentTarget as CSprite;
-			var atlasPage:AtlasPage = new AtlasPage(cb.data);
-			addChild(atlasPage);
+			detailView = new KmjDetailView(cb.data);
+			detailView.addEventListener(Event.REMOVED_FROM_STAGE,clearDetailView);
+			addChild(detailView);
+		}
+		private function clearDetailView(event:Event):void
+		{
+			if(detailView)
+			{
+				detailView = null;
+			}
 		}
 		public function clearAll():void
 		{
